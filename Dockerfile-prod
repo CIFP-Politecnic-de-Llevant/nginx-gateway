@@ -7,7 +7,8 @@ COPY ../mf-convalidacions .
 
 # build stage
 FROM develop-stage-convalidacions as build-stage-convalidacions
-ENV CENTRE=iesmanacor
+# ENV CENTRE=iesmanacor
+ENV CENTRE=politecnicllevant
 RUN npm install
 RUN quasar build
 
@@ -20,7 +21,8 @@ COPY ../mf-core .
 
 # build stage
 FROM develop-stage-core as build-stage-core
-ENV CENTRE=iesmanacor
+# ENV CENTRE=iesmanacor
+ENV CENTRE=politecnicllevant
 RUN npm install
 RUN quasar build
 
@@ -35,13 +37,14 @@ COPY ../mf-webiesmanacor .
 
 # build stage
 FROM develop-stage-webiesmanacor as build-stage-webiesmanacor
-ENV CENTRE=iesmanacor
+# ENV CENTRE=iesmanacor
+ENV CENTRE=politecnicllevant
 RUN npm install
 RUN quasar build
 
 # # production stage
 FROM nginx:1.22.0-alpine as production-stage
-COPY ./gateway/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions
 COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
 COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor
