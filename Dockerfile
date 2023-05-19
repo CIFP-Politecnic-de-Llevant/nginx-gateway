@@ -37,7 +37,7 @@ RUN npm install
 RUN quasar build
 
 # # production stage
-FROM nginx:1.22.0-alpine as production-stage
+FROM nginx:1.23.4-bullseye as production-stage
 
 ARG CONVALIDACIONS
 ARG WEBIESMANACOR
