@@ -1,9 +1,9 @@
 # CORE
 FROM node:16.6.2-alpine as develop-stage-core
 WORKDIR /app
-COPY ../mf-core/package*.json ./
+COPY ./mf-core/package*.json ./
 RUN npm install -g @quasar/cli
-COPY ../mf-core .
+COPY ./mf-core .
 
 # build stage
 FROM develop-stage-core as build-stage-core
@@ -13,9 +13,9 @@ RUN quasar build
 # CONVALIDACIONS
 FROM node:16.6.2-alpine as develop-stage-convalidacions
 WORKDIR /app
-COPY ../mf-convalidacions/package*.json ./
+COPY ./mf-convalidacions/package*.json ./
 RUN npm install -g @quasar/cli
-COPY ../mf-convalidacions .
+COPY ./mf-convalidacions .
 
 # build stage
 FROM develop-stage-convalidacions as build-stage-convalidacions
@@ -27,9 +27,9 @@ RUN quasar build
 # WEB IES MANACOR
 FROM node:16.6.2-alpine as develop-stage-webiesmanacor
 WORKDIR /app
-COPY ../mf-webiesmanacor/package*.json ./
+COPY ./mf-webiesmanacor/package*.json ./
 RUN npm install -g @quasar/cli
-COPY ../mf-webiesmanacor .
+COPY ./mf-webiesmanacor .
 
 # build stage
 FROM develop-stage-webiesmanacor as build-stage-webiesmanacor
