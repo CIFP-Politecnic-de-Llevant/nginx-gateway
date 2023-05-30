@@ -45,7 +45,7 @@ ARG WEBIESMANACOR
 COPY /nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
 
-RUN if [ "$CONVALIDACIONS" = true ]; then COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions ; fi
+RUN if [ "$CONVALIDACIONS" = true ]; then COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions; fi
 
-RUN if [ "$WEBIESMANACOR" = true ]; then COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor ; fi
+RUN if [ "$WEBIESMANACOR" = true ]; then COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor; fi
 CMD ["nginx", "-g", "daemon off;"]
