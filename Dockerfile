@@ -1,5 +1,5 @@
 # CORE
-FROM node:16.6.2-alpine as develop-stage-core
+FROM node:18-alpine as develop-stage-core
 WORKDIR /app
 COPY ./mf-core/package*.json ./
 RUN npm install -g @quasar/cli
@@ -11,7 +11,7 @@ RUN npm install
 RUN quasar build
 
 # CONVALIDACIONS
-FROM node:16.6.2-alpine as develop-stage-convalidacions
+FROM node:18-alpine as develop-stage-convalidacions
 WORKDIR /app
 COPY ./mf-convalidacions/package*.json ./
 RUN npm install -g @quasar/cli
@@ -25,7 +25,7 @@ RUN quasar build
 # GRUPS COOPERATIUS
 
 # WEB IES MANACOR
-FROM node:16.6.2-alpine as develop-stage-webiesmanacor
+FROM node:18-alpine as develop-stage-webiesmanacor
 WORKDIR /app
 COPY ./mf-webiesmanacor/package*.json ./
 RUN npm install -g @quasar/cli
