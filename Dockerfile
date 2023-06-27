@@ -23,6 +23,16 @@ RUN npm install
 RUN quasar build
 
 # GRUPS COOPERATIUS
+FROM node:18-alpine as develop-stage-grupscooperatius
+WORKDIR /app
+COPY ./mf-grupscooperatius/package*.json ./
+RUN npm install -g @quasar/cli
+COPY ./mf-grupscooperatius .
+
+# build stage
+FROM develop-stage-grupscooperatius as build-stage-grupscooperatius
+RUN npm install
+RUN quasar build
 
 # WEB IES MANACOR
 FROM node:18-alpine as develop-stage-webiesmanacor
@@ -41,6 +51,7 @@ FROM nginx:1.23.4-bullseye as production-stage
 
 ARG CONVALIDACIONS
 ARG WEBIESMANACOR
+ARG GRUPSCOOPERATIUS
 
 COPY /nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
@@ -52,6 +63,8 @@ COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/conva
 # TODO: COPY no és part de RUN, per això falla el condicional
 # RUN if [ "$WEBIESMANACOR" = true ]; then COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor; fi
 COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor
+
+COPY --from=build-stage-grupscooperatius /app/dist/spa /usr/share/nginx/html/grupscooperatius
 
 # Instal·lem certbot pel certificat SSL
 # Ho instal·lem amb PIP i no Snap (com recomana) perquè en entorns virtualitzats Snap no funciona
