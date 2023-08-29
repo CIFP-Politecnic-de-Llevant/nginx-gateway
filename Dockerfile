@@ -53,11 +53,11 @@ ARG CONVALIDACIONS
 ARG WEBIESMANACOR
 ARG GRUPSCOOPERATIUS
 
-RUN echo "hola"
+RUN echo "hola2"
 RUN echo "$CONVALIDACIONS"
 RUN echo "$WEBIESMANACOR"
 RUN echo "$GRUPSCOOPERATIUS"
-RUN echo "adeu"
+RUN echo "adeu2"
 
 COPY /nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
