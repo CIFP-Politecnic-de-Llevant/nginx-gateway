@@ -54,9 +54,9 @@ ARG WEBIESMANACOR
 ARG GRUPSCOOPERATIUS
 
 RUN echo "hola"
-RUN echo $CONVALIDACIONS
-RUN echo $WEBIESMANACOR
-RUN echo $GRUPSCOOPERATIUS
+RUN echo "$CONVALIDACIONS"
+RUN echo "$WEBIESMANACOR"
+RUN echo "$GRUPSCOOPERATIUS"
 RUN echo "adeu"
 
 COPY /nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
