@@ -64,13 +64,13 @@ COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
 
 # TODO: COPY no és part de RUN, per això falla el condicional
 # RUN if [ "$CONVALIDACIONS" = true ]; then COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions; fi
-COPY ${CONVALIDACIONS} /usr/share/nginx/html/convalidacions
+COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions
 
 # TODO: COPY no és part de RUN, per això falla el condicional
 # RUN if [ "$WEBIESMANACOR" = true ]; then COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor; fi
-COPY ${WEBIESMANACOR} /usr/share/nginx/html/webiesmanacor
+COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor
 
-COPY ${GRUPSCOOPERATIUS} /usr/share/nginx/html/grupscooperatius
+COPY --from=build-stage-grupscooperatius /app/dist/spa /usr/share/nginx/html/grupscooperatius
 
 # Instal·lem certbot pel certificat SSL
 # Ho instal·lem amb PIP i no Snap (com recomana) perquè en entorns virtualitzats Snap no funciona
