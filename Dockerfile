@@ -57,7 +57,7 @@ RUN echo "hola2"
 RUN echo "$CONVALIDACIONS"
 RUN echo "$WEBIESMANACOR"
 RUN echo "$GRUPSCOOPERATIUS"
-RUN echo "adeu2"
+RUN echo "adeu234"
 
 COPY /nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
