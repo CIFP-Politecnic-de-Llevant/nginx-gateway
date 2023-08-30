@@ -62,14 +62,16 @@ RUN echo "adeu234"
 COPY /nginx-gateway/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage-core /app/dist/spa /usr/share/nginx/html/usuaris
 
-# TODO: COPY no és part de RUN, per això falla el condicional
-# RUN if [ "$CONVALIDACIONS" = true ]; then COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions; fi
+# Esborrar si el projecte no fa servir aquest mòdul.
+#El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
 COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/convalidacions
 
-# TODO: COPY no és part de RUN, per això falla el condicional
-# RUN if [ "$WEBIESMANACOR" = true ]; then COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor; fi
+# Esborrar si el projecte no fa servir aquest mòdul.
+#El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
 COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor
 
+# Esborrar si el projecte no fa servir aquest mòdul.
+#El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
 COPY --from=build-stage-grupscooperatius /app/dist/spa /usr/share/nginx/html/grupscooperatius
 
 # Instal·lem certbot pel certificat SSL
