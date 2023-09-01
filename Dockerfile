@@ -35,14 +35,14 @@ RUN npm install
 RUN quasar build
 
 # WEB IES MANACOR
-FROM node:18-alpine as develop-stage-webiesmanacor
+FROM node:18-alpine as develop-stage-professorat-manager
 WORKDIR /app
-COPY ./mf-webiesmanacor/package*.json ./
+COPY ./mf-professorat-manager/package*.json ./
 RUN npm install -g @quasar/cli
-COPY ./mf-webiesmanacor .
+COPY ./mf-professorat-manager .
 
 # build stage
-FROM develop-stage-webiesmanacor as build-stage-webiesmanacor
+FROM develop-stage-professorat-manager as build-stage-professorat-manager
 RUN npm install
 RUN quasar build
 
@@ -58,7 +58,7 @@ COPY --from=build-stage-convalidacions /app/dist/spa /usr/share/nginx/html/conva
 
 # Esborrar si el projecte no fa servir aquest mòdul.
 #El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
-COPY --from=build-stage-webiesmanacor /app/dist/spa /usr/share/nginx/html/webiesmanacor
+COPY --from=build-stage-professorat-manager /app/dist/spa /usr/share/nginx/html/professorat-manager
 
 # Esborrar si el projecte no fa servir aquest mòdul.
 #El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
