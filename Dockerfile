@@ -34,7 +34,19 @@ FROM develop-stage-grupscooperatius as build-stage-grupscooperatius
 RUN npm install
 RUN quasar build
 
-# WEB IES MANACOR
+# RESERVES
+FROM node:18-alpine as develop-stage-reserves
+WORKDIR /app
+COPY ./mf-reserves/package*.json ./
+RUN npm install -g @quasar/cli
+COPY ./mf-reserves .
+
+# build stage
+FROM develop-stage-reserves as build-stage-reserves
+RUN npm install
+RUN quasar build
+
+# PROFESSORAT MANAGER
 FROM node:18-alpine as develop-stage-professorat-manager
 WORKDIR /app
 COPY ./mf-professorat-manager/package*.json ./
@@ -63,6 +75,10 @@ COPY --from=build-stage-professorat-manager /app/dist/spa /usr/share/nginx/html/
 # Esborrar si el projecte no fa servir aquest mòdul.
 #El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
 COPY --from=build-stage-grupscooperatius /app/dist/spa /usr/share/nginx/html/grupscooperatius
+
+# Esborrar si el projecte no fa servir aquest mòdul.
+#El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
+COPY --from=build-stage-reserves /app/dist/spa /usr/share/nginx/html/reserves
 
 COPY /nginx-gateway/certificate.crt /certificates/certificate.crt
 COPY /nginx-gateway/certificate.key /certificates/certificate.key
