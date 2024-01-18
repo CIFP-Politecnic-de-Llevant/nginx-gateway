@@ -58,6 +58,18 @@ FROM develop-stage-professorat-manager as build-stage-professorat-manager
 RUN npm install
 RUN quasar build
 
+# GESTOR DOCUMENTAL
+FROM node:18-alpine as develop-stage-gestor-documental
+WORKDIR /app
+COPY ./mf-gestor-documental/package*.json ./
+RUN npm install -g @quasar/cli
+COPY ./mf-gestor-documental .
+
+# build stage
+FROM develop-stage-gestor-documental as build-stage-gestor-documental
+RUN npm install
+RUN quasar build
+
 # # production stage
 FROM nginx:1.25-alpine as production-stage
 
@@ -79,6 +91,10 @@ COPY --from=build-stage-grupscooperatius /app/dist/spa /usr/share/nginx/html/gru
 # Esborrar si el projecte no fa servir aquest mòdul.
 #El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
 COPY --from=build-stage-reserves /app/dist/spa /usr/share/nginx/html/reserves
+
+# Esborrar si el projecte no fa servir aquest mòdul.
+#El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
+COPY --from=build-stage-gestor-documental /app/dist/spa /usr/share/nginx/html/gestor-documental
 
 COPY /nginx-gateway/certificate.crt /certificates/certificate.crt
 COPY /nginx-gateway/certificate.key /certificates/certificate.key
