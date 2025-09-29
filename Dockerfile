@@ -99,4 +99,10 @@ COPY --from=build-stage-gestor-documental /app/dist/spa /usr/share/nginx/html/ge
 COPY /nginx-gateway/certificate.crt /certificates/certificate.crt
 COPY /nginx-gateway/certificate.key /certificates/certificate.key
 
+COPY /nginx-gateway/apps/certificate.crt /certificates/apps/certificate.crt
+COPY /nginx-gateway/apps/certificate.key /certificates/apps/certificate.key
+
+COPY /nginx-gateway/api/certificate.crt /certificates/api/certificate.crt
+COPY /nginx-gateway/api/certificate.key /certificates/api/certificate.key
+
 CMD ["nginx", "-g", "daemon off;"]
