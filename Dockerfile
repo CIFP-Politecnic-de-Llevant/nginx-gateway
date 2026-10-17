@@ -70,6 +70,21 @@ FROM develop-stage-gestor-documental as build-stage-gestor-documental
 RUN npm install
 RUN quasar build
 
+# CERTIFICATS
+# Segons l'entorn hi ha certificats a /nginx-gateway, a /nginx-gateway/apps i/o a /nginx-gateway/api.
+# COPY falla si l'origen no existeix, així que es copia el directori sencer en aquesta etapa
+# i es filtra amb un RUN. A la imatge final només hi arriben els certificats que existeixen.
+FROM alpine:3.19 as certificates-stage
+COPY /nginx-gateway/ /src/
+RUN mkdir -p /certificates && \
+    for dir in . apps api; do \
+      for file in certificate.crt certificate.key; do \
+        if [ -f "/src/$dir/$file" ]; then \
+          mkdir -p "/certificates/$dir" && cp "/src/$dir/$file" "/certificates/$dir/$file"; \
+        fi; \
+      done; \
+    done
+
 # # production stage
 FROM nginx:1.25-alpine as production-stage
 
@@ -96,16 +111,7 @@ COPY --from=build-stage-reserves /app/dist/spa /usr/share/nginx/html/reserves
 #El projecte gestsuite-autoinstall ho esborra automàticament, sinó s'ha de fer manualment
 COPY --from=build-stage-gestor-documental /app/dist/spa /usr/share/nginx/html/gestor-documental
 
-#COPY /nginx-gateway/certificate.crt /certificates/certificate.crt
-#COPY /nginx-gateway/certificate.key /certificates/certificate.key
-
-#COPY /nginx-gateway/apps/certificate.crt /certificates/apps/certificate.crt
-#COPY /nginx-gateway/apps/certificate.key /certificates/apps/certificate.key
-#
-#COPY /nginx-gateway/api/certificate.crt /certificates/api/certificate.crt
-#COPY /nginx-gateway/api/certificate.key /certificates/api/certificate.key
-
-COPY /nginx-gateway/certificate.crt /certificates/certificate.crt
-COPY /nginx-gateway/certificate.key /certificates/certificate.key
+# Certificats: només es copien els que existeixen a l'entorn (/, /apps i /api)
+COPY --from=certificates-stage /certificates /certificates
 
 CMD ["nginx", "-g", "daemon off;"]
