@@ -74,11 +74,14 @@ RUN quasar build
 # Segons l'entorn hi ha certificats a /nginx-gateway, a /nginx-gateway/apps i/o a /nginx-gateway/api.
 # COPY falla si l'origen no existeix, així que es copia el directori sencer en aquesta etapa
 # i es filtra amb un RUN. A la imatge final només hi arriben els certificats que existeixen.
+# No escriure el nom complet dels fitxers en aquest bloc: gestsuite-autoinstall/deploy.sh
+# esborra amb sed les línies del Dockerfile que contenen "certificate" seguit de ".crt" o ".key".
 FROM alpine:3.19 as certificates-stage
 COPY /nginx-gateway/ /src/
 RUN mkdir -p /certificates && \
     for dir in . apps api; do \
-      for file in certificate.crt certificate.key; do \
+      for ext in crt key; do \
+        file="certificate.$ext"; \
         if [ -f "/src/$dir/$file" ]; then \
           mkdir -p "/certificates/$dir" && cp "/src/$dir/$file" "/certificates/$dir/$file"; \
         fi; \
